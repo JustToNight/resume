@@ -49,7 +49,7 @@ public class Student implements Serializable {
     /**
      * 讲师
      */
-    private Integer teacherAccount;
+    private String teacherAccount;
 
     /**
      * 权限标识符(a:管理员,b:就业老师,c:讲师,d:学生)
