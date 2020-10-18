@@ -31,19 +31,18 @@ public class CompanyController {
      * @return
      */
     @GetMapping("/getAlreadyAll")
-    public List<Company> getAll() {
+    public R getAll() {
         List<Company> allCompany = companyService.getAllCompany();
-        return allCompany;
+        return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
     }
 
     /**
      * 增加企业
      */
     @PostMapping("/addCompany")
-    public Object addCompany(Company company) {
-
-        companyService.addCompany(company);
-        return company;
+    public R addCompany(Company company) {
+        int size = companyService.addCompany(company);
+        return size>0?R.ok("增加成功"):R.error("增加失败");
     }
 
     /**
@@ -55,21 +54,17 @@ public class CompanyController {
     @GetMapping("/selectByIdCompany/{id}")
     public Object selectByIdCompany(@PathVariable("id") Integer id) {
         Company company = companyService.getByIdCompany(id);
-        return company;
+        return company!=null?R.ok().put("data",company):R.error("根据Id查企业失败");
     }
 
     /**
      * 修改企业信息
      */
     @PostMapping("/updateCompany")
-    public Object updateCompany(@RequestBody Company company) {
+    public R updateCompany(@RequestBody Company company) {
 
-/*        company.setName("哇哈哈");
-        company.setStatus(Constant.CompanyStatus.START.getCode());
-        company.setAddr("中国");
-        company.setCompanyDesc("好公司");*/
-        companyService.updateCompany(company);
-        return company;
+        int size = companyService.updateCompany(company);
+        return size>0?R.ok("修改成功"):R.error("修改失败");
     }
 
     /**
@@ -79,7 +74,7 @@ public class CompanyController {
     @PostMapping("/delCompany/{id}")
     public R delCompany(@PathVariable("id") Integer id) {
         int size = companyService.delByIdCompany(id);
-        return size>0?R.ok("删除成功"):R.error("删除被拒绝");
+        return size>0?R.ok("删除成功"):R.error("删除失败");
     }
 
 
