@@ -43,5 +43,8 @@ public class Company implements Serializable {
      */
     private String addr;
 
-
+    /**
+     * 公司状态
+     */
+    private Integer status;
 }

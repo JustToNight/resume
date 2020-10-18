@@ -16,6 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
+    //登录
+
+    //查看所有用户()
+    //添加用户()
+    //删除用户()
+    //修改用户()
 
 }
 

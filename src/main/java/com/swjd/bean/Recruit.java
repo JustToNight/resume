@@ -48,5 +48,13 @@ public class Recruit implements Serializable {
      */
     private Integer companyId;
 
+    /**
+     * 招聘人数
+     */
+    private Integer peopleNum;
 
+    /**
+     * 招聘描述
+     */
+    private String desc;
 }
