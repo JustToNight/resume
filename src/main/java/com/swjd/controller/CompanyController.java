@@ -26,8 +26,7 @@ public class CompanyController {
     private CompanyService companyService;
 
     /**
-     * 查询所有已开启招聘的公司
-     *
+     * 查询所有已开启招聘的公司(分页)
      * @return
      */
     @GetMapping("/getAlreadyAll")
@@ -37,7 +36,7 @@ public class CompanyController {
     }
 
     /**
-     * 查询所有未开启招聘的公司
+     * 查询所有未开启招聘的公司(分页)
      *
      * @return
      */
@@ -47,8 +46,11 @@ public class CompanyController {
         return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
     }
 
+
     /**
-     * 增加企业
+     * 添加企业
+     * @param company
+     * @return
      */
     @PostMapping("/addCompany")
     public R addCompany(Company company) {
