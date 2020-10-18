@@ -34,7 +34,7 @@ public class AdminController {
 
     //根据角色查询用户
     @GetMapping("/list_by_auth")
-    public Object listByAuth(@PathVariable("auth") String auth) {
+    public Object listByAuth(String auth){
         System.out.println(auth);
          List<Student> users = adminService.listByAuth(auth);
         return users;

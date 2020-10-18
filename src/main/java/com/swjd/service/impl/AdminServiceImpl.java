@@ -44,7 +44,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     //根据auth获取用户
     @Override
-    public List<Student> listByAuth(String auth) {
+    public List<Student> listByAuth(String auth){
         if (auth == null) {
             //所有admin
             List<Student> admins = this.baseMapper.selectList(null).stream().map(i -> {
@@ -72,17 +72,17 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     @Override
     public Student addUser(Student student) {
-        if (student==null) {
+        if (student == null) {
             return null;
         }
-        if (student.getAuth()==null) {
+        if (student.getAuth() == null) {
             return null;
         }
         String auth = student.getAuth();
         if (!Arrays.asList("a", "b", "c", "d").contains(auth)) {
             return null;
         }
-        if (auth.equals("d")){
+        if (auth.equals("d")) {
             if (studentService.save(student)) {
                 return student;
             }
@@ -90,7 +90,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         Admin admin = new Admin();
         BeanUtils.copyProperties(student, admin);
-        if (this.baseMapper.insert(admin)>0) {
+        if (this.baseMapper.insert(admin) > 0) {
             return student;
         }
         return null;
