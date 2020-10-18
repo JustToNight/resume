@@ -19,7 +19,13 @@ public interface CompanyService extends IService<Company> {
      * 查询所有已开启招聘的公司
      * @return
      */
-    List<Company> getAllCompany();
+    List<Company> getAlreadyAll();
+
+    /**
+     * 查询所有未开启招聘的公司
+     * @return
+     */
+    List<Company> getNotAll();
 
     /**
      * 添加一个企业

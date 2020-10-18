@@ -1,6 +1,8 @@
 package com.swjd.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.swjd.bean.Company;
 import com.swjd.common.Constant;
 import com.swjd.mapper.CompanyMapper;
@@ -30,10 +32,23 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return
      */
     @Override
-    public List<Company> getAllCompany() {
+    public List<Company> getAlreadyAll() {
         QueryWrapper<Company> comQW = new QueryWrapper<>();
-        List<Company> companyList = companyMapper.selectList(comQW.eq("status", Constant.CompanyStatus.START.getCode()));
-        return companyList;
+        Page<Company> companyPage = new Page<>(1,5);
+        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.START.getCode()));
+        return companyIPage.getRecords();
+    }
+
+    /**
+     * 查询所有未开启招聘的公司
+     * @return
+     */
+    @Override
+    public List<Company> getNotAll() {
+        QueryWrapper<Company> comQW = new QueryWrapper<>();
+        Page<Company> companyPage = new Page<>(1,5);
+        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.CREATE.getCode()));
+        return companyIPage.getRecords();
     }
 
     /**
