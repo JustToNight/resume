@@ -33,7 +33,7 @@ public class ResumeDesc implements Serializable {
      */
     private Integer resumeId;
 
-    private String desc;
+    private String content;
 
 
 }

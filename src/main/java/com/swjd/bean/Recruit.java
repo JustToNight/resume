@@ -56,5 +56,5 @@ public class Recruit implements Serializable {
     /**
      * 招聘描述
      */
-    private String desc;
+    private String recruitDesc;
 }
