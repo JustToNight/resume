@@ -26,18 +26,31 @@ public class CompanyController {
     private CompanyService companyService;
 
     /**
-     * 查询所有已开启招聘的公司
-     *
+     * 查询所有已开启招聘的公司(分页)
      * @return
      */
     @GetMapping("/getAlreadyAll")
     public R getAll() {
-        List<Company> allCompany = companyService.getAllCompany();
+        List<Company> allCompany = companyService.getAlreadyAll();
         return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
     }
 
     /**
-     * 增加企业
+     * 查询所有未开启招聘的公司(分页)
+     *
+     * @return
+     */
+    @GetMapping("/getNotAll")
+    public R getNotAll() {
+        List<Company> allCompany = companyService.getNotAll();
+        return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
+    }
+
+
+    /**
+     * 添加企业
+     * @param company
+     * @return
      */
     @PostMapping("/addCompany")
     public R addCompany(Company company) {
@@ -76,6 +89,8 @@ public class CompanyController {
         int size = companyService.delByIdCompany(id);
         return size>0?R.ok("删除成功"):R.error("删除失败");
     }
+
+
 
 
 }
