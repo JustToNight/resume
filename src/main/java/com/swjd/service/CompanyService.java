@@ -15,5 +15,42 @@ import java.util.List;
  */
 public interface CompanyService extends IService<Company> {
 
-    List<Company> getAll();
+    /**
+     * 查询所有已开启招聘的公司
+     * @return
+     */
+    List<Company> getAlreadyAll();
+
+    /**
+     * 查询所有未开启招聘的公司
+     * @return
+     */
+    List<Company> getNotAll();
+
+    /**
+     * 添加一个企业
+     * @return
+     */
+    int addCompany(Company company);
+
+    /**
+     * 根据Id查询企业
+     * @param id
+     * @return
+     */
+    Company getByIdCompany(Integer id);
+
+    /**
+     * 修改企业信息
+     * @param company
+     * @return
+     */
+    int updateCompany(Company company);
+
+    /**
+     * 根据Id删除企业
+     * @return
+     */
+    int delByIdCompany(Integer id);
+
 }
