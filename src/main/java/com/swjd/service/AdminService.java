@@ -2,7 +2,10 @@ package com.swjd.service;
 
 import com.swjd.bean.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.swjd.bean.Student;
 import com.swjd.vo.LoginVo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -14,6 +17,11 @@ import com.swjd.vo.LoginVo;
  */
 public interface AdminService extends IService<Admin> {
     //登录
-    Boolean login(LoginVo vo);
+    Admin login(LoginVo vo);
 
+    //根据auth查用户
+    List<Student> listByAuth(String auth);
+
+    //添加用户
+    Student addUser(Student student);
 }
