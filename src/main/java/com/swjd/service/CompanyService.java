@@ -3,6 +3,8 @@ package com.swjd.service;
 import com.swjd.bean.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface CompanyService extends IService<Company> {
 
+    List<Company> getAll();
 }
