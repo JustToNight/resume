@@ -1,0 +1,49 @@
+package com.swjd.bean;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.TableId;
+import java.io.Serializable;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author 凌空
+ * @since 2020-10-18
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("tb_admin")
+public class Admin implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 账号
+     */
+    private String account;
+
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 姓名
+     */
+    private String fullName;
+
+    /**
+     * 权限标识符(a:管理员,b:就业老师,c:讲师,d:学生)
+     */
+    private String auth;
+
+
+}

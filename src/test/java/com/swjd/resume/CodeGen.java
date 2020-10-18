@@ -25,6 +25,7 @@ public class CodeGen {
         //获取当前目录
         String projectPath = System.getProperty("user.dir");
         //
+        //
 //        File ff = new File(System.getProperty("user.dir"));
 //        String path=ff+"\\"+"base-main";
         globalConfig.setOutputDir(projectPath+"/src/main/java");
@@ -74,6 +75,7 @@ public class CodeGen {
 //        strategy.setInclude("user");//设置要映射的表
 
         //下划线转驼峰命名
+        strategy.setTablePrefix("tb_");
         strategy.setNaming(NamingStrategy.underline_to_camel);
         //下划线转驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
