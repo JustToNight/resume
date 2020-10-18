@@ -82,6 +82,12 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         if (!Arrays.asList("a", "b", "c", "d").contains(auth)) {
             return null;
         }
+        if (this.baseMapper.selectList(new QueryWrapper<Admin>().eq("account", student.getAccount())).size()>0) {
+            return null;
+        }
+        if (studentService.list(new QueryWrapper<Student>().eq("account", student.getAccount())).size()>0) {
+            return null;
+        }
         if (auth.equals("d")) {
             if (studentService.save(student)) {
                 return student;
