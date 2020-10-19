@@ -21,15 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/resume-desc")
 public class ResumeDescController {
-    @Autowired
-    private ResumeService resumeService;
 
-    //审核简历 vo.status 3打回 1讲师审核通过 2就业老师审核通过
-    @PostMapping("/audit")
-    public R auditByC(@RequestBody AuditVo vo) {
-        String msg = resumeService.audit(vo);
-        return msg == null ? R.error() : R.ok().put("msg", msg);
-    }
 
 }
 
