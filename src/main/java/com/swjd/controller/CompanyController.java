@@ -86,6 +86,7 @@ public class CompanyController {
      */
     @PostMapping("/delCompany/{id}")
     public R delCompany(@PathVariable("id") Integer id) {
+
         int size = companyService.delByIdCompany(id);
         return size>0?R.ok("删除成功"):R.error("删除失败");
     }

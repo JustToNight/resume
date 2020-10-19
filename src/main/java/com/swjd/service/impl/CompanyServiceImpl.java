@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.swjd.bean.Company;
+import com.swjd.bean.Recruit;
 import com.swjd.common.Constant;
 import com.swjd.mapper.CompanyMapper;
+import com.swjd.mapper.RecruitMapper;
 import com.swjd.service.CompanyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -27,13 +29,18 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Resource
     private CompanyMapper companyMapper;
 
+    @Resource
+    private RecruitMapper recruitMapper;
+
+    // 提取条件构造器
+    QueryWrapper<Company> comQW = new QueryWrapper<>();
+
     /**
      * 查询所有已开启招聘的公司
      * @return
      */
     @Override
     public List<Company> getAlreadyAll() {
-        QueryWrapper<Company> comQW = new QueryWrapper<>();
         Page<Company> companyPage = new Page<>(1,5);
         IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.START.getCode()));
         return companyIPage.getRecords();
@@ -89,8 +96,15 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      */
     @Override
     public int delByIdCompany(Integer id) {
-        int size = companyMapper.deleteById(id);
-        return size;
+
+        QueryWrapper<Recruit> comQW = new QueryWrapper<>();
+
+        // 判断企业下是否存在招聘需求
+        recruitMapper.delete(comQW.eq("company_id", id));
+
+       // 删除企业
+        return companyMapper.deleteById(id);
+
     }
 
 
