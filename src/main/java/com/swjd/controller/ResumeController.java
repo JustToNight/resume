@@ -5,10 +5,9 @@ import com.swjd.service.ResumeService;
 import com.swjd.util.R;
 import com.swjd.vo.AuditVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -30,5 +29,12 @@ public class ResumeController {
         String msg = resumeService.audit(vo);
         return msg == null ? R.error() : R.ok().put("msg", msg);
     }
+
+    //简历下载
+    @RequestMapping("/download/{resumeId}")
+    public void downloadResumeId(HttpServletResponse response, @PathVariable("resumeId") Integer resumeId) {
+        resumeService.downloadResumeId(resumeId, response);
+    }
+
 }
 

@@ -6,9 +6,17 @@ import com.swjd.bean.ResumeDesc;
 import com.swjd.mapper.ResumeMapper;
 import com.swjd.service.ResumeDescService;
 import com.swjd.service.ResumeService;
+import com.swjd.util.FileUtils;
 import com.swjd.vo.AuditVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * <p>
@@ -66,5 +74,32 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
             this.baseMapper.updateById(resume1);
         }
         return null;
+    }
+
+    @Override
+    public void downloadResumeId(Integer resumeId, HttpServletResponse response) {
+        Resume resume = this.baseMapper.selectById(resumeId);
+        String url = resume.getUrl();
+        File file = new File(url);
+        if (!file.exists()) {
+            System.out.println("文件不存在");
+            return;
+        }
+        String filename = null;
+        try {
+            filename = new String(file.getName().getBytes(StandardCharsets.UTF_8), "ISO8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("application/octet-stream");// 二进制流，不知道下载文件的类型
+        response.setHeader("content-type", "application/octet-stream");// 让服务器告诉浏览器它发送的数据属于什么文件类型
+        response.setHeader("Content-Disposition", "attachment;fileName=" + filename);// 设置文件名（这个信息头会告诉浏览器这个文件的名字和类型）\
+        OutputStream outputStream = null;// 文件输出流
+        try {
+            outputStream = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileUtils.download(file, outputStream);
     }
 }
