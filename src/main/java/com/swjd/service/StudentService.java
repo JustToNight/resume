@@ -18,7 +18,6 @@ import java.util.List;
  */
 public interface StudentService extends IService<Student> {
 
-
     //分页查询
     List<Student> getAllStu(String page, String count);
 
