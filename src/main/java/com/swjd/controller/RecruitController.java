@@ -43,7 +43,7 @@ public class RecruitController {
     @PostMapping("/addRecruit")
     public R addRecruit(Recruit recruit) {
 
-        if (recruit.getId() == null) {
+        if (recruit.getCompanyId() == null) {
             return R.error("传入数据不能为空");
         }
         int size = recruitService.addRecruit(recruit);

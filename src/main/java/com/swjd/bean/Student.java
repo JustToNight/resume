@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.Version;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+import java.util.Objects;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -46,6 +48,7 @@ public class Student implements Serializable {
      */
     private String className;
 
+
     /**
      * 讲师
      */
@@ -57,5 +60,16 @@ public class Student implements Serializable {
 
     private String auth;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return account.equals(student.account);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(account);
+    }
 }

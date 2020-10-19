@@ -55,7 +55,7 @@ public class Resume implements Serializable {
     /**
      * 简历状态(0讲师审核中,1就业老师审核中,2审核通过,3打回)
      */
-    private String status;
+    private Integer status;
 
     /**
      * 上传时间

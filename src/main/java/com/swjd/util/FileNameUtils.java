@@ -19,7 +19,11 @@ public class FileNameUtils {
      * @return
      */
     public static String getFileName(String fileOriginName){
+<<<<<<< HEAD
         return UUID.randomUUID().toString() + com.swjd.util.FileNameUtils.getSuffix(fileOriginName);
+=======
+        return UUID.randomUUID().toString() + FileNameUtils.getSuffix(fileOriginName);
+>>>>>>> resume/master
     }
 
 
