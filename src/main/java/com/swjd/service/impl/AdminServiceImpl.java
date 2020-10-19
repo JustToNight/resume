@@ -7,11 +7,16 @@ import com.swjd.bean.Student;
 import com.swjd.mapper.AdminMapper;
 import com.swjd.service.AdminService;
 import com.swjd.service.StudentService;
+import com.swjd.util.ExcelUtil;
+import com.swjd.util.FileUtils;
 import com.swjd.vo.LoginVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +31,8 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements AdminService {
+    @Value("${web.upload-path}")
+    private String path;
     @Autowired
     private StudentService studentService;
 
@@ -44,7 +51,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
     //根据auth获取用户
     @Override
-    public List<Student> listByAuth(String auth){
+    public List<Student> listByAuth(String auth) {
         if (auth == null) {
             //所有admin
             List<Student> admins = this.baseMapper.selectList(null).stream().map(i -> {
@@ -82,10 +89,10 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         if (!Arrays.asList("a", "b", "c", "d").contains(auth)) {
             return null;
         }
-        if (this.baseMapper.selectList(new QueryWrapper<Admin>().eq("account", student.getAccount())).size()>0) {
+        if (this.baseMapper.selectList(new QueryWrapper<Admin>().eq("account", student.getAccount())).size() > 0) {
             return null;
         }
-        if (studentService.list(new QueryWrapper<Student>().eq("account", student.getAccount())).size()>0) {
+        if (studentService.list(new QueryWrapper<Student>().eq("account", student.getAccount())).size() > 0) {
             return null;
         }
         if (auth.equals("d")) {
@@ -101,5 +108,35 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         return null;
 
+    }
+
+    @Override
+    public Integer delUser(String account) {
+        Admin admin = this.baseMapper.selectOne(new QueryWrapper<Admin>().eq("account", account));
+        if (admin != null) {
+            return this.baseMapper.deleteById(account);
+        }
+        Student student = studentService.getOne(new QueryWrapper<Student>().eq("account", account));
+        if (student != null) {
+            studentService.removeById(account);
+            return 1;
+        }
+        return null;
+    }
+
+    @Override
+    public Integer addStudentBatch(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        String newFileName = FileUtils.upload(file, path, fileName);
+        if (newFileName == null) {
+            return null;
+        }
+        List<Student> data = ExcelUtil.readExcel(new File(path+newFileName));
+        List<Student> list = studentService.list(null);
+        //过滤已经存在的account
+        List<Student> students = data.stream().filter(i -> !list.contains(i)).collect(Collectors.toList());
+        data.forEach(System.out::println);
+        students.forEach(System.out::println);
+        return studentService.saveBatch(students) ? students.size() : 0;
     }
 }

@@ -9,6 +9,7 @@ import com.swjd.vo.LoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/admin")
 public class AdminController {
+
     @Autowired
     private AdminService adminService;
 
@@ -36,19 +38,34 @@ public class AdminController {
 
     //根据角色查询用户
     @GetMapping("/list_by_auth")
-    public Object listByAuth(String auth) {
+    public R listByAuth(String auth) {
         List<Student> users = adminService.listByAuth(auth);
         return users == null ? R.error() : R.ok().put("data", users);
     }
 
-    //添加用户()
-    @RequestMapping("/add_user")
-    public Object addUser(@RequestBody Student student) {
+    //添加用户
+    @PostMapping("/add_user")
+    public R addUser(@RequestBody Student student) {
         Student result = adminService.addUser(student);
         return result == null ? R.error() : R.ok().put("data", result);
     }
-    //删除用户()
-    //修改用户()
+
+    //批量添加学生
+    @PostMapping("/add_user_batch")
+    public R addStudentBatch(@RequestParam("file") MultipartFile file) {
+        Integer result = adminService.addStudentBatch(file);
+        return result == null ? R.error() : R.ok().put("msg", "添加学生" + result + "个");
+    }
+
+    //删除用户
+    @GetMapping("/del_user/{account}")
+    public R delUser(@PathVariable("account") String account) {
+        Integer result = adminService.delUser(account);
+        return result == null ? R.error() : R.ok();
+    }
+
+//    //修改用户()
+//    @PostMapping("/change")
 
 }
 

@@ -2,6 +2,8 @@ package com.swjd.service;
 
 import com.swjd.bean.Resume;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.swjd.util.R;
+import com.swjd.vo.AuditVo;
 
 /**
  * <p>
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-10-18
  */
 public interface ResumeService extends IService<Resume> {
+
+    String audit(AuditVo vo);
 
 }

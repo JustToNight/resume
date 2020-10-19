@@ -3,7 +3,9 @@ package com.swjd.service;
 import com.swjd.bean.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.bean.Student;
+import com.swjd.util.R;
 import com.swjd.vo.LoginVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -24,4 +26,8 @@ public interface AdminService extends IService<Admin> {
 
     //添加用户
     Student addUser(Student student);
+
+    Integer delUser(String account);
+
+    Integer addStudentBatch(MultipartFile file);
 }

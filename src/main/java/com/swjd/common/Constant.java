@@ -30,4 +30,29 @@ public class Constant {
         }
     }
 
+    /**
+     *
+     */
+    public enum ResumeStatus {
+        AUDITBYC(0, "讲师审核中"),
+        AUDITBYB(1, "就业老师审核中"),
+        PASS(2, "审核通过"),
+        BACKTO(3, "打回");
+        private final int code;
+        private final String msg;
+
+        ResumeStatus(int code, String msg) {
+            this.code = code;
+            this.msg = msg;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+    }
+
 }
