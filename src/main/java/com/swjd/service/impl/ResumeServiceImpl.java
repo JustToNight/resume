@@ -3,13 +3,18 @@ package com.swjd.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swjd.bean.Resume;
 import com.swjd.bean.ResumeDesc;
+import com.swjd.common.Constant;
 import com.swjd.mapper.ResumeMapper;
 import com.swjd.service.ResumeDescService;
 import com.swjd.service.ResumeService;
 import com.swjd.util.FileUtils;
 import com.swjd.vo.AuditVo;
+import com.swjd.vo.ResumeUploadVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -17,6 +22,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 
 /**
  * <p>
@@ -30,7 +36,8 @@ import java.nio.charset.StandardCharsets;
 public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> implements ResumeService {
     @Autowired
     private ResumeDescService resumeDescService;
-
+    @Value("${web.upload-path}")
+    private String path;
 
     //3打回 1讲师审核通过 2就业老师审核通过
     @Override
@@ -101,5 +108,22 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
             e.printStackTrace();
         }
         FileUtils.download(file, outputStream);
+    }
+
+    @Override
+    public Resume upload(MultipartFile file, ResumeUploadVo vo) {
+        //文件储存
+        String fileName = file.getOriginalFilename();
+        String newFileName = FileUtils.upload(file, path, fileName);
+        if (newFileName == null) {
+            return null;
+        }
+        Resume resume = new Resume();
+        BeanUtils.copyProperties(vo, resume);
+        resume.setStatus(Constant.ResumeStatus.AUDITBYC.getCode());
+        resume.setTime(new Date());
+        resume.setUrl(path + newFileName);
+        this.baseMapper.insert(resume);
+        return resume;
     }
 }

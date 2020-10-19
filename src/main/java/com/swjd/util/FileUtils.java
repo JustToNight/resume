@@ -14,10 +14,10 @@ public class FileUtils {
      */
     public static String upload(MultipartFile file, String path, String fileName) {
 
-        String newFileName = FileNameUtils.getFileName(fileName);
+//        String newFileName = FileNameUtils.getFileName(fileName);
 
         // 生成新的文件名
-        String realPath = path + "/" + newFileName;
+        String realPath = path + "/" + fileName;
 
         File dest = new File(realPath);
 
@@ -29,7 +29,7 @@ public class FileUtils {
         try {
             //保存文件
             file.transferTo(dest);
-            return newFileName;
+            return fileName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

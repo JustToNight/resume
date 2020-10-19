@@ -4,6 +4,8 @@ import com.swjd.bean.Resume;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.util.R;
 import com.swjd.vo.AuditVo;
+import com.swjd.vo.ResumeUploadVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -21,4 +23,6 @@ public interface ResumeService extends IService<Resume> {
     String audit(AuditVo vo);
 
     void downloadResumeId(Integer resumeId, HttpServletResponse response);
+
+    Resume upload(MultipartFile file, ResumeUploadVo vo);
 }
