@@ -1,6 +1,7 @@
 package com.swjd.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Admin;
 import com.swjd.bean.Student;
 import com.swjd.service.AdminService;
@@ -38,9 +39,10 @@ public class AdminController {
 
     //根据角色查询用户
     @GetMapping("/list_by_auth")
-    public R listByAuth(String auth) {
-        List<Student> users = adminService.listByAuth(auth);
-        return users == null ? R.error() : R.ok().put("data", users);
+    public R listByAuth(String auth, Long page, Long limit) {
+        IPage<Student> iPage = adminService.listByAuth(auth, page, limit);
+        List<Student> users = iPage.getRecords();
+        return iPage == null ? R.error() : R.ok().put("data", users).put("total", iPage.getTotal());
     }
 
     //添加用户 

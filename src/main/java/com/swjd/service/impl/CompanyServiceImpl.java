@@ -3,21 +3,22 @@ package com.swjd.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swjd.bean.Company;
 import com.swjd.bean.Recruit;
 import com.swjd.common.Constant;
 import com.swjd.mapper.CompanyMapper;
 import com.swjd.mapper.RecruitMapper;
 import com.swjd.service.CompanyService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author 凌空
@@ -37,33 +38,35 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     /**
      * 查询所有已开启招聘的公司
+     *
      * @return
      */
     @Override
-    public List<Company> getAlreadyAll() {
-        Page<Company> companyPage = new Page<>(1,5);
-//        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.START.getCode()));
+    public IPage<Company> getAlreadyAll(Long page, Long limit) {
+        Page<Company> companyPage = new Page<>(page, limit);
         IPage<Company> companyIPage = companyMapper.selectPage(companyPage, null);
         if (companyIPage == null || companyIPage.getSize() == 0) {
             return null;
         }
-        return companyIPage.getRecords();
+        return companyIPage;
     }
 
     /**
      * 查询所有未开启招聘的公司
+     *
      * @return
      */
     @Override
     public List<Company> getNotAll() {
         QueryWrapper<Company> comQW = new QueryWrapper<>();
-        Page<Company> companyPage = new Page<>(1,5);
+        Page<Company> companyPage = new Page<>(1, 5);
         IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.CREATE.getCode()));
         return companyIPage.getRecords();
     }
 
     /**
      * 添加一个企业
+     *
      * @return
      */
     @Override
@@ -74,6 +77,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     /**
      * 根据Id查询企业
+     *
      * @param id
      * @return
      */
@@ -85,6 +89,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     /**
      * 修改企业信息
+     *
      * @param company
      * @return
      */
@@ -96,6 +101,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
 
     /**
      * 根据Id删除企业
+     *
      * @return
      */
     @Override
@@ -106,7 +112,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         // 判断企业下是否存在招聘需求
         recruitMapper.delete(comQW.eq("company_id", id));
 
-       // 删除企业
+        // 删除企业
         return companyMapper.deleteById(id);
 
     }

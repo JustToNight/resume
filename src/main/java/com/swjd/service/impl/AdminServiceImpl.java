@@ -1,6 +1,8 @@
 package com.swjd.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.swjd.bean.Admin;
 import com.swjd.bean.Student;
@@ -48,32 +50,45 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         return null;
     }
+
     //根据auth获取用户
     @Override
-    public List<Student> listByAuth(String auth) {
+    public IPage<Student> listByAuth(String auth, Long page, Long limit) {
+        Page<Admin> page1 = new Page<>(page, limit);
+        Page<Student> page2 = new Page<>(page, limit);
         if (auth == null) {
+            IPage<Admin> iPage1 = this.baseMapper.selectPage(page1, null);
             //所有admin
-            List<Student> admins = this.baseMapper.selectList(null).stream().map(i -> {
+            List<Student> admins = iPage1.getRecords().stream().map(i -> {
                 Student student = new Student();
                 BeanUtils.copyProperties(i, student);
                 return student;
             }).collect(Collectors.toList());
             //所有学生
-            List<Student> students = studentService.list(null);
+            IPage<Student> iPage2 = studentService.page(page2, null);
+            List<Student> students = iPage2.getRecords();
             admins.addAll(students);
-            return admins;
+            Page<Student> page3 = new Page<>();
+            page3.setRecords(admins);
+            page3.setTotal(iPage1.getTotal() + iPage2.getTotal());
+            return page3;
         }
         if (!Arrays.asList("a", "b", "c", "d").contains(auth)) {
             return null;
         }
         if (auth.equals("d")) {
-            return studentService.list(null);
+            return studentService.page(page2, null);
         }
-        return this.baseMapper.selectList(new QueryWrapper<Admin>().eq("auth", auth)).stream().map(i -> {
+        IPage<Admin> iPage = this.baseMapper.selectPage(page1, new QueryWrapper<Admin>().eq("auth", auth));
+        List<Student> collect = iPage.getRecords().stream().map(i -> {
             Student student = new Student();
             BeanUtils.copyProperties(i, student);
             return student;
         }).collect(Collectors.toList());
+        Page<Student> page3 = new Page<>();
+        page3.setRecords(collect);
+        page3.setTotal(iPage.getTotal());
+        return page3;
     }
 
     @Override

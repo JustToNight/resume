@@ -34,13 +34,13 @@ public class MybatisConfig {
     }
 //    sql执行效率插件
 //    需要配置开发环境
-    @Bean
-    @Profile({"dev","test"})
-    public PerformanceInterceptor performanceInterceptor(){
-        PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
-//
-        performanceInterceptor.setMaxTime(150);//设置sql执行的最大时间,如果超过则不执行
-       performanceInterceptor.setFormat(true);//格式化输出
-        return performanceInterceptor;
-    }
+//    @Bean
+//    @Profile({"dev","test"})
+//    public PerformanceInterceptor performanceInterceptor(){
+//        PerformanceInterceptor performanceInterceptor = new PerformanceInterceptor();
+////
+//        performanceInterceptor.setMaxTime(150);//设置sql执行的最大时间,如果超过则不执行
+//       performanceInterceptor.setFormat(true);//格式化输出
+//        return performanceInterceptor;
+//    }
 }

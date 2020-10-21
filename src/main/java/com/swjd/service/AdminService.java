@@ -1,5 +1,6 @@
 package com.swjd.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.bean.Admin;
 import com.swjd.bean.Student;
@@ -21,7 +22,7 @@ public interface AdminService extends IService<Admin> {
     Admin login(LoginVo vo);
 
     //根据auth查用户
-    List<Student> listByAuth(String auth);
+    IPage<Student> listByAuth(String auth, Long page, Long limit);
 
     //添加用户
     Student addUser(Student student);

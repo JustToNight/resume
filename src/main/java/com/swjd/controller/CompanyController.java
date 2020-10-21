@@ -1,8 +1,8 @@
 package com.swjd.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Company;
-import com.swjd.common.Constant;
 import com.swjd.service.CompanyService;
 import com.swjd.util.R;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +27,14 @@ public class CompanyController {
 
     /**
      * 查询所有已开启招聘的公司(分页)
+     *
      * @return
      */
     @GetMapping("/getAlreadyAll")
-    public R getAll() {
-        List<Company> allCompany = companyService.getAlreadyAll();
-        return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
+    public R getAll(Long page, Long limit) {
+        IPage<Company> allCompany = companyService.getAlreadyAll(page, limit);
+        List<Company> records = allCompany.getRecords();
+        return allCompany != null ? R.ok().put("data", records).put("total", allCompany.getTotal()) : R.error("查询失败");
     }
 
 //    /**
@@ -49,6 +51,7 @@ public class CompanyController {
 
     /**
      * 添加企业
+     *
      * @param company
      * @return
      */
@@ -58,7 +61,7 @@ public class CompanyController {
             return R.error("输入公司信息不能为空");
         }
         int size = companyService.addCompany(company);
-        return size>0?R.ok("增加成功"):R.error("增加失败");
+        return size > 0 ? R.ok("增加成功") : R.error("增加失败");
     }
 
     /**
@@ -73,7 +76,7 @@ public class CompanyController {
             return null;
         }
         Company company = companyService.getByIdCompany(id);
-        return company!=null?R.ok().put("data",company):R.error("根据Id查企业失败");
+        return company != null ? R.ok().put("data", company) : R.error("根据Id查企业失败");
     }
 
     /**
@@ -85,23 +88,22 @@ public class CompanyController {
             return R.error("传入的ID不能为空");
         }
         int size = companyService.updateCompany(company);
-        return size>0?R.ok("修改成功"):R.error("修改失败");
+        return size > 0 ? R.ok("修改成功") : R.error("修改失败");
     }
 
     /**
      * 根据Id删除企业
+     *
      * @return
      */
-    @PostMapping("/delCompany/{id}")
+    @GetMapping("/delCompany/{id}")
     public R delCompany(@PathVariable("id") Integer id) {
         if (id == null) {
             return null;
         }
         int size = companyService.delByIdCompany(id);
-        return size>0?R.ok("删除成功"):R.error("删除失败");
+        return size > 0 ? R.ok("删除成功") : R.error("删除失败");
     }
-
-
 
 
 }

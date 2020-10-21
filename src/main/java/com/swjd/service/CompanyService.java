@@ -1,5 +1,6 @@
 package com.swjd.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.util.R;
@@ -20,7 +21,7 @@ public interface CompanyService extends IService<Company> {
      * 查询所有已开启招聘的公司
      * @return
      */
-    List<Company> getAlreadyAll();
+    IPage<Company> getAlreadyAll(Long page, Long limit);
 
     /**
      * 查询所有未开启招聘的公司
