@@ -1,33 +1,12 @@
 package com.swjd.util;
-<<<<<<< HEAD
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-=======
 
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
->>>>>>> resume/master
 
 public class FileUtils {
 
     /**
-<<<<<<< HEAD
-     *
-     * @param file 文件
-     * @param path   文件存放路径
-     * @param fileName 原文件名
-     * @return
-     */
-    public static String upload(MultipartFile file, String path, String fileName){
-
-//        String newFileName = com.swjd.util.FileNameUtils.getFileName(fileName);
-//
-//        // 生成新的文件名
-        String realPath = path + "/" + fileName;
-=======
      * @param file     文件
      * @param path     文件存放路径
      * @param fileName 原文件名
@@ -35,38 +14,26 @@ public class FileUtils {
      */
     public static String upload(MultipartFile file, String path, String fileName) {
 
-        String newFileName = FileNameUtils.getFileName(fileName);
+//        String newFileName = FileNameUtils.getFileName(fileName);
 
         // 生成新的文件名
-        String realPath = path + "/" + newFileName;
->>>>>>> resume/master
+        String realPath = path + "/" + fileName;
 
         File dest = new File(realPath);
 
         //判断文件父目录是否存在
-<<<<<<< HEAD
-        if(!dest.getParentFile().exists()){
-=======
         if (!dest.getParentFile().exists()) {
->>>>>>> resume/master
             dest.getParentFile().mkdir();
         }
 
         try {
             //保存文件
             file.transferTo(dest);
-<<<<<<< HEAD
-            return realPath;
-=======
-            return newFileName;
->>>>>>> resume/master
+            return fileName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
-<<<<<<< HEAD
-
-=======
     }
 
     public static void download(File file, OutputStream outputStream) {
@@ -102,6 +69,5 @@ public class FileUtils {
                 }
             }
         }
->>>>>>> resume/master
     }
 }

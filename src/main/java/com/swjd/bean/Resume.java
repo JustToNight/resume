@@ -33,11 +33,6 @@ public class Resume implements Serializable {
     private Integer id;
 
     /**
-     * 简历名
-     */
-    private String name;
-
-    /**
      * 简历地址
      */
     private String url;
