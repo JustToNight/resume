@@ -36,7 +36,7 @@ public class CompanyController {
         if (page == null) {
             return R.error("传入的分页数据为空");
         }
-        IPage<Company> allCompany = companyService.getAlreadyAll(page, limit);
+        IPage<Company> allCompany = companyService.getAllCompany(page, limit);
         List<Company> records = allCompany.getRecords();
         return allCompany != null ? R.ok().put("data", records).put("total", allCompany.getTotal()) : R.error("查询失败");
     }
@@ -48,13 +48,12 @@ public class CompanyController {
      * @return
      */
     @GetMapping("/getAlreadyAll")
-    public R getAlreadyAll(Long page, Long limit) {
-        if (page == null) {
-            return R.error("传入的分页数据为空");
-        }
-        IPage<Company> allCompany = companyService.getAlreadyAll(page, limit);
-        List<Company> records = allCompany.getRecords();
-        return allCompany != null ? R.ok().put("data", records).put("total", allCompany.getTotal()) : R.error("查询失败");
+    public R getAlreadyAll() {
+//        if (page == null) {
+//            return R.error("传入的分页数据为空");
+//        }
+        List<Company> allCompany = companyService.getAlreadyAll();
+        return allCompany != null ? R.ok().put("data", allCompany): R.error("查询失败");
     }
 
     /**

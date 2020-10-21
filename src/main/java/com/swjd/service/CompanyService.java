@@ -30,7 +30,7 @@ public interface CompanyService extends IService<Company> {
      * 查询所有已开启招聘的公司
      * @return
      */
-    IPage<Company> getAlreadyAll(Long page, Long limit);
+    List<Company> getAlreadyAll();
 
     /**
      * 查询所有未开启招聘的公司

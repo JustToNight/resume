@@ -52,13 +52,12 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return
      */
     @Override
-    public IPage<Company> getAlreadyAll(Long page, Long limit) {
-        Page<Company> companyPage = new Page<>(page, limit);
-        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status",Constant.CompanyStatus.START.getCode()));
-        if (companyIPage == null || companyIPage.getSize() == 0) {
+    public List<Company> getAlreadyAll() {
+        List<Company> companies = companyMapper.selectList(comQW.eq("status", Constant.CompanyStatus.START.getCode()));
+        if (companies == null || companies.size() == 0) {
             return null;
         }
-        return companyIPage;
+        return companies;
     }
 
     /**
