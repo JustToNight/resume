@@ -42,7 +42,11 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public List<Company> getAlreadyAll() {
         Page<Company> companyPage = new Page<>(1,5);
-        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.START.getCode()));
+//        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.START.getCode()));
+        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, null);
+        if (companyIPage == null || companyIPage.getSize() == 0) {
+            return null;
+        }
         return companyIPage.getRecords();
     }
 
