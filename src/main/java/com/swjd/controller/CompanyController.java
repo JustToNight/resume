@@ -81,13 +81,9 @@ public class CompanyController {
      */
     @PostMapping("/updateCompany")
     public R updateCompany(@RequestBody Company company) {
-        if (company.getName() == null) {
-            return null;
+        if (company.getId() == null) {
+            return R.error("传入的ID不能为空");
         }
-        company.setId(9);
-        company.setName("HX");
-        company.setStatus(1);
-        company.setAddr("地球");
         int size = companyService.updateCompany(company);
         return size>0?R.ok("修改成功"):R.error("修改失败");
     }

@@ -1,9 +1,8 @@
 package com.swjd.service;
 
-import com.swjd.bean.Admin;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.swjd.bean.Admin;
 import com.swjd.bean.Student;
-import com.swjd.util.R;
 import com.swjd.vo.LoginVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,7 +10,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author 凌空

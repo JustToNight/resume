@@ -43,7 +43,7 @@ public class AdminController {
         return users == null ? R.error() : R.ok().put("data", users);
     }
 
-    //添加用户
+    //添加用户 
     @PostMapping("/add_user")
     public R addUser(@RequestBody Student student) {
         Student result = adminService.addUser(student);

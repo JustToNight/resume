@@ -39,7 +39,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     @Override
     public Admin login(LoginVo vo) {
         List<Admin> accounts = this.baseMapper.selectList(new QueryWrapper<Admin>().eq("account", vo.getAccount()));
-        if (accounts == null) {
+        if (accounts == null || accounts.size() == 0) {
             return null;
         }
         Admin admin = accounts.get(0);
@@ -48,7 +48,6 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         }
         return null;
     }
-
     //根据auth获取用户
     @Override
     public List<Student> listByAuth(String auth) {
@@ -131,7 +130,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         if (newFileName == null) {
             return null;
         }
-        List<Student> data = ExcelUtil.readExcel(new File(path+newFileName));
+        List<Student> data = ExcelUtil.readExcel(new File(path + newFileName));
         List<Student> list = studentService.list(null);
         //过滤已经存在的account
         List<Student> students = data.stream().filter(i -> !list.contains(i)).collect(Collectors.toList());
