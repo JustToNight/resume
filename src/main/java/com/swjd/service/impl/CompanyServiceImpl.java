@@ -36,6 +36,16 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     // 提取条件构造器
     QueryWrapper<Company> comQW = new QueryWrapper<>();
 
+    @Override
+    public IPage<Company> getAllCompany(Long page, Long limit) {
+        Page<Company> companyPage = new Page<>(page, limit);
+        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, null);
+        if (companyIPage == null || companyIPage.getSize() == 0) {
+            return null;
+        }
+        return companyIPage;
+    }
+
     /**
      * 查询所有已开启招聘的公司
      *
@@ -44,7 +54,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
     @Override
     public IPage<Company> getAlreadyAll(Long page, Long limit) {
         Page<Company> companyPage = new Page<>(page, limit);
-        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, null);
+        IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status",Constant.CompanyStatus.START.getCode()));
         if (companyIPage == null || companyIPage.getSize() == 0) {
             return null;
         }
@@ -57,11 +67,14 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return
      */
     @Override
-    public List<Company> getNotAll() {
+    public IPage<Company> getNotAll(Long page, Long limit) {
         QueryWrapper<Company> comQW = new QueryWrapper<>();
-        Page<Company> companyPage = new Page<>(1, 5);
+        Page<Company> companyPage = new Page<>(page, limit);
         IPage<Company> companyIPage = companyMapper.selectPage(companyPage, comQW.eq("status", Constant.CompanyStatus.CREATE.getCode()));
-        return companyIPage.getRecords();
+        if (companyIPage == null || companyIPage.getSize() == 0) {
+            return null;
+        }
+        return companyIPage;
     }
 
     /**

@@ -25,28 +25,51 @@ public class CompanyController {
     @Resource
     private CompanyService companyService;
 
+
+    /**
+     * 查询所有公司(分页)
+     *
+     * @return
+     */
+    @GetMapping("/getAllCompany")
+    public R getAllCompany(Long page, Long limit) {
+        if (page == null) {
+            return R.error("传入的分页数据为空");
+        }
+        IPage<Company> allCompany = companyService.getAlreadyAll(page, limit);
+        List<Company> records = allCompany.getRecords();
+        return allCompany != null ? R.ok().put("data", records).put("total", allCompany.getTotal()) : R.error("查询失败");
+    }
+
+
     /**
      * 查询所有已开启招聘的公司(分页)
      *
      * @return
      */
     @GetMapping("/getAlreadyAll")
-    public R getAll(Long page, Long limit) {
+    public R getAlreadyAll(Long page, Long limit) {
+        if (page == null) {
+            return R.error("传入的分页数据为空");
+        }
         IPage<Company> allCompany = companyService.getAlreadyAll(page, limit);
         List<Company> records = allCompany.getRecords();
         return allCompany != null ? R.ok().put("data", records).put("total", allCompany.getTotal()) : R.error("查询失败");
     }
 
-//    /**
-//     * 查询所有未开启招聘的公司(分页)
-//     *
-//     * @return
-//     */
-//    @GetMapping("/getNotAll")
-//    public R getNotAll() {
-//        List<Company> allCompany = companyService.getNotAll();
-//        return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
-//    }
+    /**
+     * 查询所有未开启招聘的公司(分页)
+     *
+     * @return
+     */
+    @GetMapping("/getNotAll")
+    public R getNotAll(Long page, Long limit) {
+        if (page == null) {
+            return R.error("传入的分页数据为空");
+        }
+        IPage<Company> allCompany = companyService.getNotAll(page,limit);
+        return allCompany!=null?R.ok().put("data",allCompany):R.error("查询失败");
+    }
 
 
     /**
