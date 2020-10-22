@@ -1,5 +1,6 @@
 package com.swjd.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Resume;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.util.R;
@@ -25,4 +26,6 @@ public interface ResumeService extends IService<Resume> {
     void downloadResumeId(Integer resumeId, HttpServletResponse response);
 
     Resume upload(MultipartFile file, ResumeUploadVo vo);
+
+    IPage<Resume> listByAuth(String account, Long page, Long limit);
 }

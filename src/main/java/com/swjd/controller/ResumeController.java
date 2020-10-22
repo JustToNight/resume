@@ -1,6 +1,7 @@
 package com.swjd.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Resume;
 import com.swjd.service.ResumeService;
 import com.swjd.util.R;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/resume")
 public class ResumeController {
+
     @Autowired
     private ResumeService resumeService;
 
@@ -50,5 +52,11 @@ public class ResumeController {
         return resume == null ? R.error() : R.ok().put("data", resume);
     }
 
+    //根据角色查简历 分页
+    @GetMapping("/list_by_account")
+    public R listByAuth(String account, Long page, Long limit) {
+        IPage<Resume> iPage = resumeService.listByAuth(account, page, limit);
+        return iPage == null ? R.error() : R.ok().put("data", iPage.getRecords()).put("total", iPage.getTotal());
+    }
 }
 

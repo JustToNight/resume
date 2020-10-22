@@ -26,6 +26,7 @@ public interface CompanyService extends IService<Company> {
      */
     IPage<Company> getAllCompany(Long page,Long limit);
 
+
     /**
      * 查询所有已开启招聘的公司
      * @return

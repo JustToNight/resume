@@ -1,15 +1,21 @@
 package com.swjd.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.swjd.bean.Admin;
 import com.swjd.bean.Resume;
 import com.swjd.bean.ResumeDesc;
 import com.swjd.bean.Student;
 import com.swjd.common.Constant;
 import com.swjd.mapper.ResumeMapper;
+import com.swjd.service.AdminService;
 import com.swjd.service.ResumeDescService;
 import com.swjd.service.ResumeService;
 import com.swjd.service.StudentService;
 import com.swjd.util.FileUtils;
+import com.swjd.util.PageUtil;
 import com.swjd.vo.AuditVo;
 import com.swjd.vo.ResumeUploadVo;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +30,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -42,6 +50,8 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
     private String path;
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private AdminService adminService;
 
     //3打回 1讲师审核通过 2就业老师审核通过
     @Override
@@ -117,7 +127,7 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
     @Override
     public Resume upload(MultipartFile file, ResumeUploadVo vo) {
         Student student = studentService.getById(vo.getStudentAccount());
-        if (student==null){
+        if (student == null) {
             return null;
         }
         String fileName = file.getOriginalFilename();
@@ -132,5 +142,31 @@ public class ResumeServiceImpl extends ServiceImpl<ResumeMapper, Resume> impleme
         resume.setUrl(path + newFileName);
         this.baseMapper.insert(resume);
         return resume;
+    }
+
+    @Override
+    public IPage<Resume> listByAuth(String account, Long page, Long limit) {
+        Admin admin = adminService.getById(account);
+        if (admin != null) {
+            String auth = admin.getAuth();
+            if ("c".equals(auth)) {
+                List<Student> teachersStudent = studentService.list(new QueryWrapper<Student>().eq("teacher_account", account));
+                ArrayList<Resume> resumes = new ArrayList<>();
+                teachersStudent.forEach(i ->
+                        resumes.addAll(this.baseMapper.selectList(new QueryWrapper<Resume>().eq("student_account", i.getAccount())))
+                );
+                List list = PageUtil.startPage(resumes, page.intValue(), limit.intValue());
+                Page<Resume> resumePage = new Page<>();
+                resumePage.setRecords(list);
+                resumePage.setTotal(resumes.size());
+                return resumePage;
+            }
+            return this.baseMapper.selectPage(new Page<Resume>(page, limit), null);
+        }
+        Student student = studentService.getById(account);
+        if (student != null) {
+            return this.baseMapper.selectPage(new Page<Resume>(page, limit), new QueryWrapper<Resume>().eq("student_account", account));
+        }
+        return null;
     }
 }
