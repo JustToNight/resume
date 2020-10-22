@@ -11,6 +11,7 @@ import com.swjd.service.AdminService;
 import com.swjd.service.StudentService;
 import com.swjd.util.ExcelUtil;
 import com.swjd.util.FileUtils;
+import com.swjd.util.PageUtil;
 import com.swjd.vo.LoginVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,32 +55,30 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
     //根据auth获取用户
     @Override
     public IPage<Student> listByAuth(String auth, Long page, Long limit) {
-        Page<Admin> page1 = new Page<>(page, limit);
-        Page<Student> page2 = new Page<>(page, limit);
         if (auth == null) {
-            IPage<Admin> iPage1 = this.baseMapper.selectPage(page1, null);
+            List<Admin> admins = this.baseMapper.selectList(null);
             //所有admin
-            List<Student> admins = iPage1.getRecords().stream().map(i -> {
+            List<Student> adminToStudent = admins.stream().map(i -> {
                 Student student = new Student();
                 BeanUtils.copyProperties(i, student);
                 return student;
             }).collect(Collectors.toList());
             //所有学生
-            IPage<Student> iPage2 = studentService.page(page2, null);
-            List<Student> students = iPage2.getRecords();
-            admins.addAll(students);
-            Page<Student> page3 = new Page<>();
-            page3.setRecords(admins);
-            page3.setTotal(iPage1.getTotal() + iPage2.getTotal());
-            return page3;
+            List<Student> students = studentService.list(null);
+            adminToStudent.addAll(students);
+            List list = PageUtil.startPage(adminToStudent, page.intValue(), limit.intValue());
+            Page<Student> page1 = new Page<>();
+            page1.setRecords(list);
+            page1.setTotal(adminToStudent.size());
+            return page1;
         }
         if (!Arrays.asList("a", "b", "c", "d").contains(auth)) {
             return null;
         }
         if (auth.equals("d")) {
-            return studentService.page(page2, null);
+            return studentService.page(new Page<>(page, limit), null);
         }
-        IPage<Admin> iPage = this.baseMapper.selectPage(page1, new QueryWrapper<Admin>().eq("auth", auth));
+        IPage<Admin> iPage = this.baseMapper.selectPage(new Page<>(page, limit), new QueryWrapper<Admin>().eq("auth", auth));
         List<Student> collect = iPage.getRecords().stream().map(i -> {
             Student student = new Student();
             BeanUtils.copyProperties(i, student);

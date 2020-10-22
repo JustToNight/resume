@@ -28,6 +28,7 @@ public class Admin implements Serializable {
     /**
      * 账号
      */
+    @TableId(value = "account", type = IdType.AUTO)
     private String account;
 
     /**

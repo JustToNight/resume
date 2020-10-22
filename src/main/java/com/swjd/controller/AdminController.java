@@ -12,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 /**
  * <p>
  * 前端控制器
@@ -41,8 +39,7 @@ public class AdminController {
     @GetMapping("/list_by_auth")
     public R listByAuth(String auth, Long page, Long limit) {
         IPage<Student> iPage = adminService.listByAuth(auth, page, limit);
-        List<Student> users = iPage.getRecords();
-        return iPage == null ? R.error() : R.ok().put("data", users).put("total", iPage.getTotal());
+        return iPage == null ? R.error() : R.ok().put("data", iPage.getRecords()).put("total", iPage.getTotal());
     }
 
     //添加用户 
