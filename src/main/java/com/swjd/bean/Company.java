@@ -48,5 +48,10 @@ public class Company implements Serializable {
      */
     private Integer status;
 
+    /**
+     * 公司文档地址
+     */
+    private String url;
+
 
 }

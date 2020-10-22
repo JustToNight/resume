@@ -4,6 +4,7 @@ import com.swjd.bean.Student;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class ExcelUtil {
             //2:获取第一个工作表sheet
             Sheet sheet = workbook.getSheet(0);
             //4.自己注意行列关系
-            for (int i = 1; i < sheet.getRows(); i++) {
+            for (int i = 1; i < getRightRows(sheet); i++) {
                 Student student = new Student();
                 student.setAccount(sheet.getCell(0, i).getContents());
                 student.setPassword(sheet.getCell(1, i).getContents());
@@ -37,6 +38,26 @@ public class ExcelUtil {
             e.printStackTrace();
         }
         return students;
+    }
+
+    private static int getRightRows(Sheet sheet) {
+        int rsCols = sheet.getColumns(); //列数
+        int rsRows = sheet.getRows(); //行数
+        int nullCellNum;
+        int afterRows = rsRows;
+        for (int i = 1; i < rsRows; i++) { //统计行中为空的单元格数
+            nullCellNum = 0;
+            for (int j = 0; j < rsCols; j++) {
+                String val = sheet.getCell(j, i).getContents();
+                val = StringUtils.trimToEmpty(val);
+                if (StringUtils.isBlank(val))
+                    nullCellNum++;
+            }
+            if (nullCellNum >= rsCols) { //如果nullCellNum大于或等于总的列数
+                afterRows--; //行数减一
+            }
+        }
+        return afterRows;
     }
 }
 

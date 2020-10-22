@@ -10,10 +10,17 @@ import com.swjd.common.Constant;
 import com.swjd.mapper.CompanyMapper;
 import com.swjd.mapper.RecruitMapper;
 import com.swjd.service.CompanyService;
+import com.swjd.util.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -26,7 +33,8 @@ import java.util.List;
  */
 @Service
 public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> implements CompanyService {
-
+    @Value("${web.upload-path}")
+    private String path;
     @Resource
     private CompanyMapper companyMapper;
 
@@ -82,7 +90,7 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
      * @return
      */
     @Override
-    public int addCompany(Company company) {
+    public Integer addCompany(Company company) {
         int size = companyMapper.insert(company);
         return size;
     }
@@ -127,6 +135,39 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
         // 删除企业
         return companyMapper.deleteById(id);
 
+    }
+
+    @Override
+    public void downloadById(Integer companyId, HttpServletResponse response) {
+        Company company = this.baseMapper.selectById(companyId);
+        String url = company.getUrl();
+        File file = null;
+        try {
+            file = new File(url);
+        } catch (Exception e) {
+            System.out.println("文件不存在");
+            return;
+        }
+        if (!file.exists()) {
+            System.out.println("文件不存在");
+            return;
+        }
+        String filename = null;
+        try {
+            filename = new String(file.getName().getBytes(StandardCharsets.UTF_8), "ISO8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        response.setContentType("application/octet-stream");// 二进制流，不知道下载文件的类型
+        response.setHeader("content-type", "application/octet-stream");// 让服务器告诉浏览器它发送的数据属于什么文件类型
+        response.setHeader("Content-Disposition", "attachment;fileName=" + filename);// 设置文件名（这个信息头会告诉浏览器这个文件的名字和类型）\
+        OutputStream outputStream = null;// 文件输出流
+        try {
+            outputStream = response.getOutputStream();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FileUtils.download(file, outputStream);
     }
 
 

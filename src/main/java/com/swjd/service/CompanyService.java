@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.util.R;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -43,7 +45,7 @@ public interface CompanyService extends IService<Company> {
      * 添加一个企业
      * @return
      */
-    int addCompany(Company company);
+    Integer addCompany(Company company);
 
     /**
      * 根据Id查询企业
@@ -65,4 +67,5 @@ public interface CompanyService extends IService<Company> {
      */
     int delByIdCompany(Integer id);
 
+    void downloadById(Integer companyId, HttpServletResponse response);
 }

@@ -6,6 +6,7 @@ import com.swjd.bean.Company;
 import com.swjd.service.CompanyService;
 import com.swjd.util.R;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.List;

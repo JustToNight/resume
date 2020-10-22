@@ -5,6 +5,7 @@ import com.swjd.bean.Company;
 import com.swjd.bean.Recruit;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.vo.CompanyVo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface RecruitService extends IService<Recruit> {
      * @param recruit
      * @return
      */
-    int addRecruit(Recruit recruit);
+    Integer addRecruit(MultipartFile file, Recruit recruit);
 
     /**
      * 根据岗位名查询招聘信息
