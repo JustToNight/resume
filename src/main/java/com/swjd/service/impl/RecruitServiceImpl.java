@@ -5,9 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.swjd.bean.Company;
 import com.swjd.bean.Recruit;
+import com.swjd.mapper.CompanyMapper;
 import com.swjd.mapper.RecruitMapper;
 import com.swjd.service.RecruitService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.swjd.util.PageUtil;
+import com.swjd.vo.CompanyVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,9 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
     @Resource
     private RecruitMapper recruitMapper;
 
+    @Resource
+    private CompanyMapper companyMapper;
+
     // 抽取条件构造器
     private QueryWrapper<Recruit> comQW = new QueryWrapper<>();
 
@@ -37,9 +44,17 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      */
     @Override
     public IPage<Recruit> getAllRecruit(Long page, Long limit) {
-        Page<Recruit> page1 = new Page<>(page, limit);
-        IPage<Recruit> recruitIPage = recruitMapper.selectPage(page1, null);
-        return recruitIPage;
+        List<Recruit> recruits = recruitMapper.selectList(null);
+        for (Recruit e : recruits) {
+            Company company = companyMapper.selectById(e.getCompanyId());
+            e.setCompanyList(company);
+        }
+        List list = PageUtil.startPage(recruits, page.intValue(), limit.intValue());
+        Page<Recruit> recruitPage = new Page<>();
+        recruitPage.setRecords(list);
+        recruitPage.setTotal(recruits.size());
+        return recruitPage;
+
     }
 
     /**
@@ -58,12 +73,19 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @return
      */
     @Override
-    public List<Recruit> selectByNameRecruit(String positions) {
-        if (positions == null) {
-            return null;
+    public IPage<Recruit> selectByNameRecruit(String positions,Long page, Long limit) {
+        // 抽取条件构造器
+       QueryWrapper<Recruit> comQW1 = new QueryWrapper<>();
+        List<Recruit> recruits = recruitMapper.selectList(comQW1.like(true,"positions",positions));
+        for (Recruit e : recruits) {
+            Company company = companyMapper.selectById(e.getCompanyId());
+            e.setCompanyList(company);
         }
-        Page<Recruit> recruitPage = new Page<>(1, 5);
-        return recruitMapper.selectPage(recruitPage, comQW.eq("positions", positions)).getRecords();
+        List list = PageUtil.startPage(recruits, page.intValue(), limit.intValue());
+        Page<Recruit> recruitPage = new Page<>();
+        recruitPage.setRecords(list);
+        recruitPage.setTotal(recruits.size());
+        return recruitPage;
     }
 
     /**

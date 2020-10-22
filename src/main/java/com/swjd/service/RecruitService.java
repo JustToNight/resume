@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Company;
 import com.swjd.bean.Recruit;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.swjd.vo.CompanyVo;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ public interface RecruitService extends IService<Recruit> {
      * @param positions
      * @return
      */
-    List<Recruit> selectByNameRecruit(String positions);
+    IPage<Recruit> selectByNameRecruit(String positions,Long page, Long limit);
 
     /**
      * 修改招聘信息

@@ -1,10 +1,10 @@
 package com.swjd.bean;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.Version;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -67,6 +67,9 @@ public class Recruit implements Serializable {
      * 面试地点
      */
     private String place;
+
+    @TableField(exist = false)
+    private Company companyList;
 
 
 }

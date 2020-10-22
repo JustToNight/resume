@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Recruit;
 import com.swjd.service.RecruitService;
 import com.swjd.util.R;
+import com.swjd.vo.CompanyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ * 前端控制器
  * </p>
  *
  * @author 凌空
@@ -28,16 +29,23 @@ public class RecruitController {
 
     /**
      * 查询招聘信息
+     * 根据岗位名查询招聘信息
      * @return
      */
     @GetMapping("/getAllRecruit")
-    public R getAllRecruit(Long page, Long limit) {
-        IPage<Recruit> allRecruit = recruitService.getAllRecruit(page,limit);
-        return allRecruit!=null?R.ok().put("data",allRecruit).put("total",allRecruit.getTotal()):R.error("查询所有招聘信息失败");
+    public R getAllRecruit(String positions,Long page, Long limit) {
+        if (positions == null) {
+            IPage<Recruit> allRecruit = recruitService.getAllRecruit(page, limit);
+            return allRecruit != null ? R.ok().put("data", allRecruit) : R.error("查询全部失败");
+        }
+        IPage<Recruit> recruits = recruitService.selectByNameRecruit(positions,page, limit);
+
+        return recruits != null ? R.ok().put("data", recruits).put("total", recruits.getTotal()) : R.error("根据名字查失败");
     }
 
     /**
      * 添加招聘信息
+     *
      * @param recruit
      * @return
      */
@@ -48,25 +56,12 @@ public class RecruitController {
             return R.error("传入数据不能为空");
         }
         int size = recruitService.addRecruit(recruit);
-        return size>0?R.ok("添加招聘信息成功"):R.error("添加招聘信息失败");
-    }
-
-    /**
-     * 根据岗位名查询招聘信息
-     * @param positions
-     * @return
-     */
-    @GetMapping("/getByNameRecruit/{positions}")
-    public R getByNameRecruit(@PathVariable("positions") String positions) {
-        if (positions == null) {
-            return R.error("传入的值不能为空");
-        }
-        List<Recruit> recruits = recruitService.selectByNameRecruit(positions);
-        return recruits!=null?R.ok().put("data",recruits):R.error("根据名字查询招聘信息失败");
+        return size > 0 ? R.ok("添加招聘信息成功") : R.error("添加招聘信息失败");
     }
 
     /**
      * 修改招聘信息
+     *
      * @param recruit
      * @return
      */
@@ -76,11 +71,12 @@ public class RecruitController {
             return R.error("传入的实体类不能为空");
         }
         int size = recruitService.updateRecruit(recruit);
-        return size>0?R.ok():R.error("修改招聘信息失败");
+        return size > 0 ? R.ok() : R.error("修改招聘信息失败");
     }
 
     /**
      * 删除招聘信息
+     *
      * @param id
      * @return
      */
@@ -91,7 +87,7 @@ public class RecruitController {
         }
         int size = recruitService.delRecruit(id);
 
-        return size>0?R.ok():R.error("删除招聘信息失败");
+        return size > 0 ? R.ok() : R.error("删除招聘信息失败");
     }
 
 }
