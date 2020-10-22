@@ -1,5 +1,6 @@
 package com.swjd.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Company;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.swjd.util.R;
@@ -16,6 +17,15 @@ import java.util.List;
  */
 public interface CompanyService extends IService<Company> {
 
+
+    /**
+     * 查询所有公司
+     * @param page
+     * @param limit
+     * @return
+     */
+    IPage<Company> getAllCompany(Long page,Long limit);
+
     /**
      * 查询所有已开启招聘的公司
      * @return
@@ -26,7 +36,7 @@ public interface CompanyService extends IService<Company> {
      * 查询所有未开启招聘的公司
      * @return
      */
-    List<Company> getNotAll();
+    IPage<Company> getNotAll(Long page, Long limit);
 
     /**
      * 添加一个企业
