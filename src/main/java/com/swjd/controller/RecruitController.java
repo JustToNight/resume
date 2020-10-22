@@ -1,6 +1,7 @@
 package com.swjd.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Recruit;
 import com.swjd.service.RecruitService;
 import com.swjd.util.R;
@@ -30,9 +31,9 @@ public class RecruitController {
      * @return
      */
     @GetMapping("/getAllRecruit")
-    public R getAllRecruit() {
-        List<Recruit> allRecruit = recruitService.getAllRecruit();
-        return allRecruit!=null?R.ok().put("data",allRecruit):R.error("查询所有招聘信息失败");
+    public R getAllRecruit(Long page, Long limit) {
+        IPage<Recruit> allRecruit = recruitService.getAllRecruit(page,limit);
+        return allRecruit!=null?R.ok().put("data",allRecruit).put("total",allRecruit.getTotal()):R.error("查询所有招聘信息失败");
     }
 
     /**

@@ -53,10 +53,10 @@ public class Recruit implements Serializable {
      */
     private Integer peopleNum;
 
-    /**
-     * 招聘描述
-     */
-    private String recruitDesc;
+//    /**
+//     * 招聘描述
+//     */
+//    private String recruitDesc;
 
     /**
      * 公司文档地址
@@ -68,9 +68,5 @@ public class Recruit implements Serializable {
      */
     private String place;
 
-    /**
-     * 面试时间
-     */
-    private String interviewTime;
 
 }

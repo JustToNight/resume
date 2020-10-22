@@ -1,5 +1,6 @@
 package com.swjd.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.swjd.bean.Company;
 import com.swjd.bean.Recruit;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -20,7 +21,7 @@ public interface RecruitService extends IService<Recruit> {
      * 查询招聘信息
      * @return
      */
-    List<Recruit> getAllRecruit();
+    IPage<Recruit> getAllRecruit(Long page, Long limit);
 
     /**
      * 添加招聘信息

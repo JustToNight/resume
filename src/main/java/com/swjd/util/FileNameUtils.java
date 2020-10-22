@@ -23,6 +23,4 @@ public class FileNameUtils {
     public static String getFileName(String fileOriginName) {
         return UUID.randomUUID().toString() + FileNameUtils.getSuffix(fileOriginName);
     }
-
-
 }

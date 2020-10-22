@@ -36,9 +36,10 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
      * @return
      */
     @Override
-    public List<Recruit> getAllRecruit() {
-        Page<Recruit> recruitPage = new Page<>(1, 5);
-        return recruitMapper.selectPage(recruitPage, null).getRecords();
+    public IPage<Recruit> getAllRecruit(Long page, Long limit) {
+        Page<Recruit> page1 = new Page<>(page, limit);
+        IPage<Recruit> recruitIPage = recruitMapper.selectPage(page1, null);
+        return recruitIPage;
     }
 
     /**
