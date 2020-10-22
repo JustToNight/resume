@@ -41,7 +41,7 @@ public class RecruitController {
      * @return
      */
     @PostMapping("/addRecruit")
-    public R addRecruit(Recruit recruit) {
+    public R addRecruit(@RequestBody Recruit recruit) {
 
         if (recruit.getCompanyId() == null) {
             return R.error("传入数据不能为空");
@@ -52,15 +52,15 @@ public class RecruitController {
 
     /**
      * 根据岗位名查询招聘信息
-     * @param name
+     * @param positions
      * @return
      */
-    @GetMapping("/getByNameRecruit/{name}")
-    public R getByNameRecruit(@PathVariable("name") String name) {
-        if (name == null) {
+    @GetMapping("/getByNameRecruit/{positions}")
+    public R getByNameRecruit(@PathVariable("positions") String positions) {
+        if (positions == null) {
             return R.error("传入的值不能为空");
         }
-        List<Recruit> recruits = recruitService.selectByNameRecruit(name);
+        List<Recruit> recruits = recruitService.selectByNameRecruit(positions);
         return recruits!=null?R.ok().put("data",recruits):R.error("根据名字查询招聘信息失败");
     }
 

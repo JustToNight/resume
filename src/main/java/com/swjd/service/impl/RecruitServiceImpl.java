@@ -53,16 +53,16 @@ public class RecruitServiceImpl extends ServiceImpl<RecruitMapper, Recruit> impl
 
     /**
      * 根据岗位名查询招聘信息
-     * @param name
+     * @param positions
      * @return
      */
     @Override
-    public List<Recruit> selectByNameRecruit(String name) {
-        if (name == null) {
+    public List<Recruit> selectByNameRecruit(String positions) {
+        if (positions == null) {
             return null;
         }
         Page<Recruit> recruitPage = new Page<>(1, 5);
-        return recruitMapper.selectPage(recruitPage, comQW.eq("name", name)).getRecords();
+        return recruitMapper.selectPage(recruitPage, comQW.eq("positions", positions)).getRecords();
     }
 
     /**

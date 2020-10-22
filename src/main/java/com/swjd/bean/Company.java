@@ -47,4 +47,6 @@ public class Company implements Serializable {
      * 公司状态
      */
     private Integer status;
+
+
 }

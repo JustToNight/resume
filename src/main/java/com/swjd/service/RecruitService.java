@@ -31,10 +31,10 @@ public interface RecruitService extends IService<Recruit> {
 
     /**
      * 根据岗位名查询招聘信息
-     * @param name
+     * @param positions
      * @return
      */
-    List<Recruit> selectByNameRecruit(String name);
+    List<Recruit> selectByNameRecruit(String positions);
 
     /**
      * 修改招聘信息

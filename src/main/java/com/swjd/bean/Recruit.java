@@ -31,7 +31,7 @@ public class Recruit implements Serializable {
     /**
      * 招聘的岗位
      */
-    private String posistions;
+    private String positions;
 
     /**
      * 薪资
@@ -57,4 +57,20 @@ public class Recruit implements Serializable {
      * 招聘描述
      */
     private String recruitDesc;
+
+    /**
+     * 公司文档地址
+     */
+    private String url;
+
+    /**
+     * 面试地点
+     */
+    private String place;
+
+    /**
+     * 面试时间
+     */
+    private String interviewTime;
+
 }
